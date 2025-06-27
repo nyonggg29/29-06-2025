@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Kita - Anniversary Website</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .heart-icon {
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-caption h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.3em;
+            color: #fff;
+        }
+
+        .gallery-caption p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .navigation {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .nav-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+
+        .nav-button.secondary {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+        }
+
+        .nav-button.secondary:hover {
+            background: linear-gradient(45deg, #0984e3, #74b9ff);
+        }
+
+        .nav-button.home {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+        }
+
+        .nav-button.home:hover {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-state .heart-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .nav-button {
+                display: block;
+                margin: 10px auto;
+                max-width: 200px;
+            }
+
+            .video-section {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .video-player {
+                height: 250px;
+            }
+
+            .video-caption {
+                padding: 20px;
+            }
+
+            .video-caption h3 {
+                font-size: 1.3em;
+            }
+
+            .video-caption p {
+                font-size: 1em;
+            }
+        }
+
+        .video-section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .video-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4em;
+            text-align: center;
+        }
+
+        .video-placeholder p {
+            font-size: 0.2em;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        .video-caption {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .video-caption h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .video-caption p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .video-upload-hint {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .video-upload-hint h4 {
+            margin: 0 0 10px 0;
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        .video-upload-hint p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div class="header">
+        <div class="heart-icon">💕</div>
+        <h1>Galeri Kita</h1>
+        <p>Kumpulan momen indah yang telah kita lewati bersama</p>
+        
+        
+    </div>
+
+    <div class="gallery-container" id="galleryContainer">
+        <!-- Foto 1: Anniversary -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-06-27 pukul 13.08.25_7ae15129.jpg" alt="Momen Anniversary" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Momen Anniversary</h3>
+                <p>Hari yang penuh kebahagiaan dan cinta</p>
+            </div>
+        </div>
+
+        <!-- Foto 2: Spesial -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-06-27 pukul 13.03.29_79d3d080.jpg" alt="Foto Spesial" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Foto Spesial</h3>
+                <p>Kenangan yang tak akan pernah terlupakan</p>
+            </div>
+        </div>
+
+        <!-- Foto 3: Tempat untuk foto tambahan -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-06-27 pukul 13.08.34_f3b49d26.jpg" alt="Foto Kita" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Foto Kita</h3>
+                <p>Momen indah lainnya bersama</p>
+            </div>
+        </div>
+
+        <!-- Foto 4: Tempat untuk foto tambahan -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-05-08 pukul 22.16.29_1b8b3ff9.jpg" alt="Bersama" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Bersama</h3>
+                <p>Setiap detik bersamamu adalah anugerah</p>
+            </div>
+        </div>
+
+        <!-- Foto 5: Tempat untuk foto tambahan -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-06-27 pukul 13.08.35_64838711.jpg" alt="Momen Bahagia" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Momen Bahagia</h3>
+                <p>Kebahagiaan yang tak terhingga</p>
+            </div>
+        </div>
+
+        <!-- Foto 6: Tempat untuk foto tambahan -->
+        <div class="gallery-item">
+            <img src="Gambar WhatsApp 2025-06-27 pukul 13.08.34_7f0af674.jpg" alt="Cinta Kita" class="gallery-image">
+            <div class="gallery-caption">
+                <h3>Cinta Kita</h3>
+                <p>Yang semakin dalam setiap hari</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <div class="video-container">
+            <div class="video-player">
+                <video controls style="width: 100%; height: 100%; object-fit: cover;">
+                    <source src="Video WhatsApp 2025-06-27 pukul 18.42.45_b5c5bbcb.mp4" type="video/mp4">
+                    <source src="video-anda.webm" type="video/webm">
+                    Browser Anda tidak mendukung tag video.
+                </video>
+            </div>
+            <div class="video-caption">
+                <h3>Video Kenangan Kita</h3>
+                <p>Momen-momen berharga yang telah kita abadikan dalam video. Setiap frame mengingatkan kita akan kebahagiaan yang telah kita bagikan bersama. 💕</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <a href="index.html" class="nav-button home">🏠 Halaman Utama</a>
+        <a href="anniversary.html" class="nav-button">🎉 Anniversary</a>
+        <a href="special.html" class="nav-button secondary">💝 Halaman Spesial</a>
+    </div>
+
+    <script>
+        // Membuat animasi floating hearts
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (15 + Math.random() * 15) + 'px';
+            heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+            
+            document.getElementById('floatingHearts').appendChild(heart);
+            
+            // Hapus heart setelah animasi selesai
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+        
+        // Buat floating hearts setiap 3 detik
+        setInterval(createFloatingHeart, 3000);
+        
+        // Buat beberapa hearts saat halaman dimuat
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createFloatingHeart, i * 800);
+        }
+
+        // Tambahkan efek click pada gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html> 
